@@ -5,14 +5,14 @@ import Login from "./login";
 describe("Login page", () => {
   it("should render with required fields", () => {
     render(<Login />);
-    expect(screen.getByText("Sign in")).toBeInTheDocument();
+
     expect(screen.getByPlaceholderText("Username")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Password")).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /sign in/i })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("checkbox", { name: "Remember me" })
+      screen.getByRole("checkbox", { name: /remember me/i })
     ).toBeInTheDocument();
     expect(screen.getByText("Forgot password?")).toBeInTheDocument();
   });

@@ -1,8 +1,34 @@
 import { LockFilled, LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Card, Checkbox, Flex, Form, Input, Layout, Space } from "antd";
+import {
+  Alert,
+  Button,
+  Card,
+  Checkbox,
+  Flex,
+  Form,
+  Input,
+  Layout,
+  Space,
+} from "antd";
 import Logo from "../../components/icons/Logo";
+import { useMutation } from "@tanstack/react-query";
+import type { UserCredentials } from "../../types";
+import { login } from "../../http/api";
+
+const loginUser = async (credentials: UserCredentials) => {
+  // server call logic
+  const { data } = await login(credentials);
+  return data;
+};
 
 function Login() {
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationKey: ["login"],
+    mutationFn: loginUser,
+    onSuccess: async (data) => {
+      console.log("Login successful:", data);
+    },
+  });
   return (
     <>
       <Layout
@@ -35,7 +61,24 @@ function Login() {
             style={{ width: 320 }}
             variant="borderless"
           >
-            <Form initialValues={{ remember: true }}>
+            <Form
+              initialValues={{ remember: true }}
+              onFinish={(values) => {
+                mutate({ email: values.username, password: values.password });
+                console.log("Form submitted:", values);
+              }}
+            >
+              {isError && (
+                <Alert
+                  message={error.message}
+                  description={
+                    error?.message || "Invalid username or password."
+                  }
+                  type="error"
+                  showIcon
+                  style={{ marginBottom: 16 }}
+                />
+              )}
               <Form.Item
                 name="username"
                 rules={[
@@ -69,6 +112,7 @@ function Login() {
                   type="primary"
                   htmlType="submit"
                   style={{ width: "100%" }}
+                  loading={isPending}
                 >
                   Sign in
                 </Button>

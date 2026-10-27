@@ -1,69 +1,26 @@
-# React + TypeScript + Vite
+# Admin UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The admin dashboard front end for [auth-serv](https://github.com/shahruk-maharuj/auth-serv), my multi-tenant auth service. Built with **React, TypeScript and Vite**.
 
-Currently, two official plugins are available:
+> **Status: early.** The login flow against the auth service is in place and tested. Dashboard pages for managing users and tenants are next.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## What's here
 
-## Expanding the ESLint configuration
+- **Login** using Ant Design forms, sending credentials to the auth service with a TanStack Query mutation, with loading and error states handled
+- **Typed API layer**: one Axios client, configured from `VITE_BACKEND_API_URL`, with endpoint functions on top
+- **Routing** with React Router's data router
+- **Tests** with Vitest, Testing Library and jsdom (`login.spec.tsx`)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Run it
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+You'll need [auth-serv](https://github.com/shahruk-maharuj/auth-serv) running locally first.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+# .env → VITE_BACKEND_API_URL="http://localhost:5501/api"
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Stack
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+React 19 · TypeScript · Vite · TanStack Query · Ant Design · Axios · React Router · Vitest · Testing Library
